@@ -1,7 +1,5 @@
 import pygame as pg# so i dont have to always type "pygame." and its just "pg"
 from sys import exit
-import os# dont know if i ever used this, will liekly remove
-#import time
 
 pg.init()
 #set up window dimensions. do not change (as of now)
@@ -13,7 +11,6 @@ sqW = sectionW/3
 sqH = sectionH/3
 
 turn = 1# start with X
-#boxTaken = []
 boxVal = {}
 lastMove = ''
 wirat = pg.image.load('kiwirat.png')#used for testing, but im keeping it bc i like it. exclamation point for surprise
@@ -25,10 +22,6 @@ lgoMark = pg.transform.scale(oMark,(sectionW,sectionH))#to fill the large square
 oMark = pg.transform.scale(oMark,(sqW,sqH)) #to fill the small squares w O
 # make window and surface and all
 window = pg.display.set_mode((windowW,windowH))
-sectSurface = pg.Surface((sectionW,sectionH))
-sectSurface.set_alpha(123)
-#highlight = pg.Surface((sectionW,sectionH))
-#gloSectionInPlay = ''
 pg.display.set_caption("notOthello")#because othello was the original thought; window name2
 gameWon = 0
 
@@ -39,13 +32,11 @@ secDict = {
 wonSects = {v:'' for k,v in secDict.items()} #new dict, copy secDict's key and make the values empty strings. Will keep track of won sections
 wonSects.update({'':''}) #if i recall having this here was to fix a key error. i dont remember where, may have fixed it but for now I'll leave it for security
 sectNums = 'xABCDEFGHI'# i call from this string with section number, x is there to offset that it starts from zero. my sections are 1-9
-#print(wonSects)
 clock = pg.time.Clock() # use for frame rate
-#section = pg.Rect(0,0,sectionW,sectionH) simply never used
+
 def drawBoard(line=0):# As it's called, to draw the board
     sqCol = 0
     if line == 0:
-        #window.fill((20,18,167)) realized i don't need this, it's immediately covered
         for i in range(3):#row
             for u in range(3):#column
                 if sqCol%2 == 0:
@@ -61,7 +52,6 @@ def drawBoard(line=0):# As it's called, to draw the board
         pg.draw.line(window,'teal',(i*sectionW,0),(i*sectionW,windowH),width=2)#vert
         pg.draw.line(window,'teal',(0,i*sectionH),(windowH,i*sectionH),width=2)
 
-#sqNum = '1'
 def sqCoords():# to give coordinates to each small square, uses dictionary. should depend on window size.
     sqSect = 'A'
     coordKey = ''
@@ -73,13 +63,10 @@ def sqCoords():# to give coordinates to each small square, uses dictionary. shou
                 for t in range(3): #small col
                     coordKey = sqSect + sqNum
                     coords.update({coordKey:(t*sectionW/3+u*sectionW,y*sectionH/3+i*sectionH)})
-                    #print(f'i={i}, u={u}, y={y}, t={t} and coord is {coordKey}:{coords[coordKey]} ')
                     sqNum=str(int(sqNum)+1)
             sqSect = chr(ord(sqSect)+1)
     boxVal = {k:'' for k in coords} # could use = dict.fromkeys(coords,'')
     #above line is to make a dictionary for keeping track of which squares are occupied and by whom
-    #print(boxVal)
-    #print(coords)
 
 
 def qSectWin():# checks if a section was won. should be after every time a square is placed
@@ -122,7 +109,6 @@ def qSectWin():# checks if a section was won. should be after every time a squar
         sqSect = chr(ord(sqSect)+1)
 
 def qBoardWin():#to check the sections to see if someone has met game winning conditions
-    #sqSect = 'A'
     if gameWon != 0:
         print("Game over! Press backspace to restart game!")
         return None
@@ -156,8 +142,6 @@ def qBoardWin():#to check the sections to see if someone has met game winning co
             if wonSects[box1] ==  wonSects[box2] and wonSects[box2] == wonSects[box3] and wonSects[box1] != '':
                 gameWin(wonSects[box1]); return None
             
-    #sqSect = chr(ord(sqSect)+1)
-
 def sectWin(side,sect):# what to do when a section is won
     if gameWon != 0:# so that more squares/actions can't be taken after a win. must clear board w/ backspace
         print("Game over! Press backspace to restart game!")
@@ -168,17 +152,14 @@ def sectWin(side,sect):# what to do when a section is won
     if side == 'X':
         pg.draw.rect(window,'light blue',pg.rect.Rect(x+offset,y,sectionW-offset,sectionH)) # put a colored rectangle and the winning symbol. wanted rectangle to be lower opacity so you could still see the smaller board
         window.blit(lgxMark,coords[sect])
-        #window.blit(sectSurface,coords[sect])
         drawBoard(1)
     else:
         pg.draw.rect(window,'red',pg.rect.Rect(x+offset,y,sectionW-offset,sectionH))
         window.blit(lgoMark,coords[sect])
-        #window.blit(sectSurface,coords[sect])
         drawBoard(1)
     for i in range(1,10):
         cordKey = sect[0:1] +str(i)
         boxVal[cordKey] = side
-        #print(f"{cordKey}, {boxVal[cordKey]}")
     valHighlight(sectNums[int(lastMove[1])])
     wonSects[sect[0:1]] = side
     qBoardWin()# after any section win check if the game was won
@@ -188,10 +169,8 @@ def gameWin(side):# procedure for if a game is won
     global boxVal
     global gameWon
     if gameWon != 0: #if the game was already won, don't keep printing
-        #print("Game over! Press backspace to restart game!")
         return None
     gameWon = 1
-    #boxVal = {k:'w' for k,v in boxVal.items()}
     print(f"{side} HAS WON THE GAME!")
 
 def tttInit():# initialize tic tac toe
@@ -200,9 +179,6 @@ def tttInit():# initialize tic tac toe
     #sqMatrices()
     #print(f"\n\n{matA}")
 def valHighlight(valSect,any=0):#highlight the section in play
-    #global highlight
-    #if validSect(sect,sqNum) != False:
-        #sectLet = sectNums[int(sqNum)]
         sect = valSect+'1'
         x, y = coords[sect]
         drawBoard(1)
@@ -231,27 +207,6 @@ def validSect(sect,thisMove):#check if the clicked section is in play
         return True
     if sect != sectInPlay:#if they chose a section not in play, return false
         return False
-    # global gloSectionInPlay
-    # print(f"turn: {turn} and turncheck: {turnCheck}")
-    # if turn == 1:
-    #     gloSectionInPlay = sectNums[int(thisMove)]
-    #     return True
-    # sectInPlay = gloSectionInPlay
-    # if turn > turnCheck:# Do not reassign on the same turn
-    #     sectInPlay = sectNums[int(thisMove)]
-    #     gloSectionInPlay = sectInPlay
-    # if wonSects[sectInPlay] != '':
-    #     sectInPlay = 'any!!'
-    # print(f"section in play is {sectInPlay}")
-    # if sectInPlay == "any!!":
-    #     return True
-  
-    # if wonSects[sectInPlay] !='':#if this move chose a won section
-    #     return True
-    # if sect == sectNums[int(lastMove[1])]:
-    #     return True
-    # else:
-    #     return False
 
 def placeMark(tup=(0,0),boxLCoords=''):#place mark in given box, given the section is in play
     global turn
@@ -263,15 +218,12 @@ def placeMark(tup=(0,0),boxLCoords=''):#place mark in given box, given the secti
         return None
     if turn == 1:
         lastMove = boxLCoords
-        #print(f"Sect{boxLCoords}: {sectNums[int(lastMove[1])]}")
-        #if wonSects[sectNums[int(lastMove[1])]] != '':
     if validSect(boxLCoords[0],boxLCoords[1]) == False:
         print("invalid section"); return None
     if boxVal[boxLCoords] != '':
         print("occupied"); return None
     else:
         pass
-        #boxTaken.append(boxLCoords)
     if turn%2==0:
         boxVal[boxLCoords] = 'O'
         window.blit(oMark,tup)
@@ -310,28 +262,19 @@ print(len(coords))# should always print 81 meaning there are 81 boxes/coords (9*
 while True: #game loop
     cur = pg.mouse.get_pos()
     click = pg.mouse.get_pressed()#when mouse is clicked
-    #window.blit(xMark,(500,500))
     for event in pg.event.get():
         if event.type == pg.QUIT:
             pg.quit()
             exit()
         if event.type == pg.MOUSEBUTTONDOWN:
             mouseSq = cur[0]//sqW*100, cur[1]//sqH*100
-            mouseSec = cur[0]//sectionW, cur[1]//sectionH# locate mouse when LMB is pressed
-            #print(f'Small: {mouseSqX},{mouseSqY} Big: {mouseSecX},{mouseSecY} Section: {[mouseSec]}')
             match = next((k for (k, v) in coords.items() if v == mouseSq), None)#match the coordinates to a (small) box
             print(match)
-            #qSectWin()
             placeMark(coords[match],match)
-            #turnCheck=turn
             valHighlight(sectNums[int(lastMove[1])])
-            #qSectWin()
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_BACKSPACE:
                 boardReset()
-            if event.unicode == '?': #interchangeable function, used to get updarted var information during creation
-                print(f"wonsects: {wonSects}")
-                #print(coords)
             if event.unicode == '!':
                 try:
                     window.blit(wirat,coords[lastMove])
