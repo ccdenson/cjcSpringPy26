@@ -23,7 +23,14 @@ oMark = pg.transform.scale(oMark,(sqW,sqH)) #to fill the small squares w O
 # make window and surface and all
 window = pg.display.set_mode((windowW,windowH))
 pg.display.set_caption("notOthello")#because othello was the original thought; window name2
+font = pg.font.Font(None,int(sqW))
+
 gameWon = 0
+
+def write(string,color=(181,105,255)):
+    textSur = font.render(string,True,color)
+    screenCent = textSur.get_rect(center=(windowW/2,windowH/2))
+    window.blit(textSur,(screenCent))
 
 coords = {}
 secDict = {
@@ -171,13 +178,13 @@ def gameWin(side):# procedure for if a game is won
     if gameWon != 0: #if the game was already won, don't keep printing
         return None
     gameWon = 1
+    write(str(side)+" has won the game!")
     print(f"{side} HAS WON THE GAME!")
 
 def tttInit():# initialize tic tac toe
     drawBoard()
     sqCoords()
-    #sqMatrices()
-    #print(f"\n\n{matA}")
+ 
 def valHighlight(valSect,any=0):#highlight the section in play
         sect = valSect+'1'
         x, y = coords[sect]
