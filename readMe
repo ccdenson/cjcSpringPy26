@@ -1,1 +1,51 @@
 file overview video: https://youtu.be/tOEo-sZhomA
+Ultimate Tic-Tac-Toe (U3T)
+I very much enjoyed making this, though I had my fair share of issues. It happened over two days where I spent too much time on it.
+My issue with programing is that I am in 1 of 2 states. The first: Everything is going well, I can clearly understand my current goal and what 
+is to be done next. The second: Confused and needing to solve a problem and figure out how/where to continue. The issue is the fact that in both
+of these states it is hard to leave the program alone. Either I think "I'm doing well, might as well get more done while it's flowing" or "I need 
+to stay and solve this problem right now." Should I leave during the second, the program will consume my mind still. Though it was a sprint, it
+was not without thorough thought and much effort. 
+
+I used YouTube to learn the basics of Pygame and setting it up and had to use Shell to install. I did the boring stuff: setting dimensions, importing
+some photos, etc. I declare all my global variable up at the top. I did not want to hardcode window dimensions, I wanted to be able to change them
+but I was unable to get that working properly.
+
+I first thought of how I'd get a board. I could use a png but I thought it'd be more fun and better practice to draw it myself. I also assumed that
+dimensions would be customizable and it'd stop a stretched or pixelated look I'd get from using an image. It would make 81 small squares and 9 big.
+The harder part was assigning coordinates and I found that this project would be very dictionary oriented. I didn't want to manually enter 81 boxes,
+seemed like the boring way out so I also made this loop dependent. It was fun and interesting because of the naming of the coordinates. To change
+the letter for each section, I had to convert the letter to unicode, add 1, then convert it back. That was intersting to learn and implenting it
+felt gave satisfaction.
+
+Next I was trying to convert mouse clicks to stamps and placing the mark at the proper spot. I learned to use 'for' and 'in' to locate a key
+based off a value. First I'd round the mouse click to match the coordinates of the top left corner of the box it clicked. The I used the 'next'
+function, likely discoverd in this context through Stack Overflow, to say "Check every key/value pair in my coordinate dictionary, return the
+key if the value matches the rounded mouse coordinates." This is to say if the mouse passed it (100, 200) the string 'A8' would be returned.
+I tried to write my matching operation in words to be sure I understand what I repurposed, I don't like adding things I don't understand the
+workings of.
+
+The next challenge was placing markers. In itself, it's easy to past an X or an O in the proper box. It took more thinking to write the logic
+that would only allow this in specific cases. The square had to be empty and, because of the rules of U3T, it had to be in the section
+corresponding to the square of the last move. I had to keep track of the previous move and convert the small box number into the bigger section.
+I made a 'Valid Section' function to handle this. This may have been the hardest part of the project. I made it set a 'Section in play'
+after each move and managed to get it to work after much trial and a disproportionate ammount of error. I also used dictionaries to keep track
+of won sections, section numbers, and the filled status of boxes. UI-wise, I made it so the section in play is highlighted which was its own
+function and hassle. I wanted it to be a true highlight rather than a boarder but couldnt get the rectangle redrawing and clearing to work properly.
+I instead give the valid section a colored border and redraw the thick lines every move to update the border location. 
+
+Second to last was checking for section wins and then board wins. These weren't to hard. I imagine using matrices at first but instead did what I
+imagine to be a slightly more manual version. I would check horizontal, vertical then diagonal and use three different variable to hold box values.
+If these boxes were all the same value, it would count as a win. This was the same for board wins except it happens less. Section wins are checked
+for after every move and board wins are checked for after a section win.
+
+Finally was the reset button. Not too complicated, but more than I initially thought. I cleared dictionary values, but not the keys. This neglected
+the fact that both the keys and values were made together so the dictionaries were not reset, but made longer. Once I identified this as the issue
+the rest was pretty simple. I also made it so '!' pastes an image I used when testing image pasting. 
+
+Over the course of the project I also attempted to use the "exec()" function but found it unnecesary for my needs, but I'm interested in working with
+it at some point as it seems like it could be very fun to use! I imagine that could be a fun mechanic in some games.
+
+Thank you!
+
+- C.CD
